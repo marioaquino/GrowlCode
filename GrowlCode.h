@@ -44,7 +44,6 @@ OSSIBILITY OF SUCH DAMAGE.
 + (NSString*)applicationNameForGrowl;
 + (NSData*)applicationIconDataForGrowl;
 + (NSDictionary*)registrationDictionaryForGrowl;
-+ (BOOL) canNotify;
 @end
 
 @interface NSObject (XCBuildOperation)

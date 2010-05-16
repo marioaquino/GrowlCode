@@ -1,8 +1,7 @@
-build/
-*.pbxuser
-*.mode1v3
-
-.svn
-
-.DS_Store
-profile
+build
+build/revision
+*.xcodeproj/*.pbxuser
+*.xcodeproj/*.perspectivev3
+*.xcodeproj/*.mode1v3
+*.xcodeproj/*.tm_build_errors
+*.tmproj

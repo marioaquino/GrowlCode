@@ -151,12 +151,6 @@ BOOL PerformSwizzle(Class c, SEL orig, SEL new)
 	return dict;
 }
 
-+ (BOOL) canNotify
-{
-  // Only notify if Xcode isn't the active application
-  return ! [NSRunningApplication currentApplication].active;
-}
-
 @end
 
 @implementation NSObject (GrowlCodePatch)
@@ -240,16 +234,25 @@ BOOL PerformSwizzle(Class c, SEL orig, SEL new)
 	else if ([object isKindOfClass:NSClassFromString(@"XCPreprocessFileBuildOperation")])
 		growlName = NSLocalizedStringFromTableInBundle(preprocessingComplete, nil, bundle, @"");
 	
-	if (growlName && [GrowlCode canNotify]) {
+	if (growlName) {
 	    NSString* configString = [[@" (" stringByAppendingString:configurationName] stringByAppendingString:@")"];
 		NSString* description = [projectName stringByAppendingString:configString];
 		if (extraInfo)
 			description = [[description stringByAppendingString:@"\n"] stringByAppendingString:extraInfo];
 		
+		NSString* iconName = nil;
+		if (errors > 0) {
+			iconName = @"failed";
+		} else {
+			iconName = (warnings==0) ? @"passed" : @"warning";
+		}
+
+		NSData* iconData = [NSData dataWithContentsOfFile:[bundle pathForResource:iconName ofType:@"png"]];
+		
 		[GrowlApplicationBridge notifyWithTitle:growlName
 									description:description
 							   notificationName:growlName
-									   iconData:nil
+									   iconData:iconData
 									   priority:0
 									   isSticky:NO
 								   clickContext:nil];
